@@ -1,18 +1,42 @@
 import React, { Component } from 'react';
 import logo from './globe.png';
 import './App.css';
+import GoogleMapReact from 'google-map-react';
 
 const gasPrice = 2.51;
 
-class GasCalculator extends Component {
+function calculateTotalCost(milesRange, vehicleMPG) {
+  if (Number.isNaN(milesRange) ||
+    Number.isNaN(vehicleMPG) ||
+    Number.isNaN(gasPrice)) {
+    return '';
+  }
+  return (milesRange / vehicleMPG) * gasPrice;
+}
 
-  handleValueChange(value) {
-    this.setState({currency: 'd',value});
+class GasCalculator extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {milesRange: 650, vehicleMPG:10};
+    this.handleMPGChange = this.handleMPGChange.bind(this);
+    this.handleMilesChange = this.handleMilesChange.bind(this);
   }
 
-  
+  handleMPGChange(value) {
+    this.setState({vehicleMPG: value});
+  }
+
+  handleMilesChange(value) {
+    this.setState({milesRange: value});
+  }
+
+  calculate
 
   render() {
+    const milesRange = this.state.milesRange;
+    const vehicleMPG = this.state.vehicleMPG;
+    const cost = calculateTotalCost(milesRange, vehicleMPG);
+
     return (
       <div className="mainApp">
       <fieldset>
@@ -26,9 +50,9 @@ class GasCalculator extends Component {
       <fieldset>
         <legend>Miles Details</legend>
         <p>Total Miles:</p>
-        <input />
+        <input value={milesRange} onChange={this.handleMilesChange}/>
         <p>Enter Your Vehicle MPG:</p>
-        <input onChange={this.handleValueChange}/>
+        <input value={vehicleMPG} onChange={this.handleMPGChange}/>
       </fieldset>
 
       <fieldset disabled="disabled">
@@ -36,7 +60,7 @@ class GasCalculator extends Component {
         <p>Current Gas Price:</p>
         <input value={gasPrice}/>
         <p>Total Cost:</p>
-        <input />
+        <input value={cost}/>
       </fieldset>
 
       </div>
@@ -44,36 +68,70 @@ class GasCalculator extends Component {
   }
 }
 
-// class FieldInput extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.handleChange = this.handleChange.bind(this);
-//   }
-//
-//   handleChange(e) {
-//     this.props.onChange(e.target.value);
-//   }
+// class Map extends Component {
 //   render() {
-//     const amount = this.props.amount;
-//     const currency = this.props.currency;
 //     return (
-//       <fieldset>
-//         <legend>Enter amount in {currencyNames[currency]}:</legend>
-//         <input
-//           value={amount}
-//           onChange={this.handleChange} />
-//       </fieldset>
+//       <div>
+//       <GoogleMapReact
+//         defaultCenter={this.props.center}
+//         defaultZoom={this.props.zoom}
+//       >
+//         <AnyReactComponent
+//           lat={59.955413}
+//           lng={30.337844}
+//           text={'Kreyser Avrora'}
+//         />
+//       </GoogleMapReact>
+//       </div>
 //     );
 //   }
-// }
 
-class Map extends Component {
-  render() {
-    return (
-      <div>
 
-      </div>
-    );
+  const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
+  class SimpleMap extends Component {
+    static defaultProps = {
+      center: {lat: 59.95, lng: 30.33},
+      zoom: 11
+    };
+
+    render() {
+      return (
+        <GoogleMapReact
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
+        >
+          <AnyReactComponent
+            lat={59.955413}
+            lng={30.337844}
+            text={'AJ Bronson'}
+          />
+        </GoogleMapReact>
+      );
+    }
+  }
+
+  export class Map extends React.Component {
+  loadMap() {
+    if (this.props && this.props.google) {
+      // google is available
+      const {google} = this.props;
+      const maps = google.maps;
+
+      const mapRef = this.refs.map;
+      const node = React.Component.findDOMNode(mapRef);
+
+      let zoom = 14;
+      let lat = 37.774929;
+      let lng = -122.419416;
+      const center = new maps.LatLng(lat, lng);
+      const mapConfig = Object.assign({}, {
+        center: center,
+        zoom: zoom
+      })
+      this.map = new maps.Map(node, mapConfig);
+    }
+    // ...
   }
 }
 
@@ -89,7 +147,7 @@ class App extends Component {
           <GasCalculator />
         </div>
         <div>
-          <Map />
+          <SimpleMap/>
         </div>
       </div>
     );
