@@ -8,8 +8,8 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background-color: #608fdb;
+  height: 120px;
   padding: 20px;
   color: white;
 }
@@ -28,6 +28,8 @@ input {
   border-width: 3px;
   height: 20px;
   text-align: center;
+  -webkit-border-radius: 10px;
+  font-size: 10pt;
 }
 
 fieldset {
@@ -37,6 +39,14 @@ fieldset {
   margin-right: 2em;
 }
 
-.mileage {
-  margin-top: 3em;
+#mileage {
+  margin-top: 1em;
+}
+
+body {
+  background-color: #dee2e8;
+}
+
+#map {
+  margin-top: 1em;
 }
