@@ -37,6 +37,13 @@ fieldset {
   padding-bottom: 2em;
   margin-left: 2em;
   margin-right: 2em;
+  border-width: 3px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+p {
+  font-weight: normal;
 }
 
 #mileage {

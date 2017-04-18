@@ -12,7 +12,7 @@ function calculateTotalCost(milesRange, vehicleMPG, gasPrice) {
 
   const cost = (milesRange / vehicleMPG) * gasPrice;
 
-  if (cost == "Infinity" ||
+  if (cost === "Infinity" ||
       milesRange === '' ||
       vehicleMPG === '' ||
       gasPrice === '') {
@@ -72,7 +72,7 @@ class GasCalculator extends Component {
 
     return (
       <div className="mainApp">
-      
+
       <fieldset>
         <legend>Location Details</legend>
         <p>Starting location:</p>
